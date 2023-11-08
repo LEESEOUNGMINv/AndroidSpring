@@ -1,0 +1,24 @@
+DROP TABLE android_customer_tbl CASCADE constraints;
+CREATE TABLE android_customer_tbl (
+    id        VARCHAR2(20) PRIMARY KEY,
+    password  VARCHAR2(100) NOT NULL,  -- 암호화된 비밀번호를 저장해야 하므로 사이즈 크게 
+    name      VARCHAR2(20) NOT NULL,   
+    birthday  DATE         NOT NULL,
+    address   VARCHAR2(50) NOT NULL,
+    hp        VARCHAR2(13),
+    email     VARCHAR2(50) NOT NULL,
+    regDate  TIMESTAMP DEFAULT sysdate,   -- 가입일
+    -- 시큐리티를 위한 추가
+    key      VARCHAR2(100), -- 이메일인증
+    authority VARCHAR2(30) DEFAULT 'ROLE_USER', -- 권한 : ROLE_USER:customer, ROLE_ADMIN:관리자
+    enabled   CHAR(1)    DEFAULT 0    -- 계정사용 가능여부(1:사용가능, 0:사용불가) : 이메일인증시 1로 update
+);
+
+--DESC android_customer_tbl; 
+INSERT INTO android_customer_tbl (id, password, name, birthday, address, hp, email, regDate, key, authority, enabled)
+VALUES('hong', '1234', '홍길동', '2010-01-01', '서울시 강남구', '010-1111-1111', 'sunrise555@naver.com', sysdate, 'aaaa', 'ROLE_USER', 1);
+INSERT INTO android_customer_tbl (id, password, name, birthday, address, hp, email, regDate, key, authority, enabled)
+VALUES('park', '1234', '박하나', '2010-01-01', '서울시 금천구', '010-1111-1111', 'sunrise555@naver.com', sysdate, 'aaaa', 'ROLE_USER', 1);
+COMMIT;
+
+SELECT * FROM android_customer_tbl; 
